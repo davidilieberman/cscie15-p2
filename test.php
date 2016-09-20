@@ -17,19 +17,20 @@ ini_set('display_errors', 1); # Display errors on page (instead of a log file)
   <?php
 
     foreach ($lines as $line_num => $line) {
-      echo "Line #<b>{$line_num}</b>: ${line} <br/>\n";
+      $l = trim($line);
+      echo "Line #<b>{$line_num}</b>: \"${l}\" <br/>\n";
     }
 
     $pwd = "";
-
-    $slice = array_splice($lines, 4, 1);
-
-    echo "<p>Slice is $slice[0]</p>\n";
-
-    foreach ($lines as $line_num => $line) {
-      echo "Line #<b>{$line_num}</b>: ${line} <br/>\n";
+    for ($i = 0; $i < 4; $i++) {
+      $r = mt_rand(0, count($lines));
+      $pwd .= trim(array_splice($lines, $r, 1)[0]);
+      if ($i < 3) {
+        $pwd .= "-";
+      }
     }
 
+    echo "<p>Password is $pwd</p>\n";
 
    ?>
 </html>
