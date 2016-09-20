@@ -8,9 +8,10 @@ ini_set('display_errors', 1); // Display errors on page (instead of a log file)
   <head>
     <title>Test</title>
     <?php
-
+      // Load our source words into an array
       $lines = file('./words.txt');
 
+      // Write the current state of the word array to output
       function echoLines($lines)
       {
           echo "<p>\n";
@@ -21,6 +22,21 @@ ini_set('display_errors', 1); // Display errors on page (instead of a log file)
           echo "</p>\n";
       }
 
+      // Construct the password
+      function concatPwd($pwd, $lines, $numComponents)
+      {
+          for ($i = 0; $i < $numComponents; ++$i) {
+              $r = mt_rand(0, count($lines) - 1);
+              $pwd .= trim(array_splice($lines, $r, 1)[0]);
+              if ($i < $numComponents - 1) {
+                  $pwd .= '-';
+              }
+              echoLines($lines);
+              echo "<p>Password is $pwd</p>\n";
+          }
+          return $pwd;
+      }
+
      ?>
   </head>
 
@@ -29,15 +45,8 @@ ini_set('display_errors', 1); // Display errors on page (instead of a log file)
     echoLines($lines);
 
     $pwd = '';
-    for ($i = 0; $i < 4; ++$i) {
-        $r = mt_rand(0, count($lines)-1);
-        $pwd .= trim(array_splice($lines, $r, 1)[0]);
-        if ($i < 3) {
-            $pwd .= '-';
-        }
-        echoLines($lines);
-        echo "<p>Password is $pwd</p>\n";
-    }
-
+    $pwd = concatPwd($pwd, $lines, 4);
    ?>
+
+   <h3>Final password is <?php echo $pwd ?>
 </html>
