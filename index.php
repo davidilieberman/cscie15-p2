@@ -11,7 +11,9 @@
       <p>Number of words: <select name="num_words">
         <?php
         for ($i = $MIN_WORDS; $i <= $MAX_WORDS; ++$i) {
-            echo "<option value='$i'>$i</option>\n";
+            echo "<option value='$i'";
+            if ($i == $DEFAULT_COUNT) echo " selected='true' ";
+            echo ">$i</option>\n";
         }
         ?>
       </select></p>
