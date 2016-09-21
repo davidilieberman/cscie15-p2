@@ -3,15 +3,12 @@ error_reporting(E_ALL);       // Report Errors, Warnings, and Notices
 ini_set('display_errors', 1); // Display errors on page (instead of a log file)
 ?>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Test</title>
     <?php
+
       // Load our source words into an array
       $lines = file('./words.txt');
 
-      // Write the current state of the word array to output
+      // Debugging function: write the current state of the word array to output
       function echoLines($lines)
       {
           echo "<p>\n";
@@ -23,30 +20,35 @@ ini_set('display_errors', 1); // Display errors on page (instead of a log file)
       }
 
       // Construct the password
-      function concatPwd($pwd, $lines, $numComponents)
+      function concatPwd($lines, $numComponents)
       {
+          $pwd = '';
           for ($i = 0; $i < $numComponents; ++$i) {
+              //echoLines($lines);
               $r = mt_rand(0, count($lines) - 1);
               $pwd .= trim(array_splice($lines, $r, 1)[0]);
               if ($i < $numComponents - 1) {
                   $pwd .= '-';
               }
-              echoLines($lines);
-              echo "<p>Password is $pwd</p>\n";
+              //echo "<p>$pwd</p>\n";
           }
+
           return $pwd;
       }
 
-     ?>
-  </head>
-
-  <?php
-
-    echoLines($lines);
-
-    $pwd = '';
-    $pwd = concatPwd($pwd, $lines, 4);
-   ?>
-
-   <h3>Final password is <?php echo $pwd ?>
-</html>
+    if (isset($_GET['num_words'])) {
+        $nw = $_GET['num_words'];
+        echo '<h3>';
+        // Validate: is the input a number?
+        if (!is_numeric($nw)) {
+            echo 'The number of words to include in your passphrase must be, well, a number.';
+        // Validate: is the input a valid number?
+        } elseif ($nw < $MIN_WORDS || $nw > $MAX_WORDS) {
+            echo "The number of words in your catch phase must be no less than $MIN_WORDS and no greater than $MAX_WORDS";
+        } else {
+            $pwd = concatPwd($lines, $nw);
+            echo "Your password is $pwd";
+        }
+        echo "</h3>\n";
+    }
+    //echoLines($lines);
