@@ -17,7 +17,6 @@ away
 barded
 bark
 be
-be.
 before
 bosom
 bound
@@ -121,7 +120,6 @@ no
 nor
 not
 now
-now
 nymph
 ocean
 of
@@ -131,7 +129,7 @@ other
 our
 own
 pass
-peace,
+peace
 piping
 pleasing
 pleasures
@@ -156,7 +154,7 @@ soul
 souls
 sportive
 spy
-stamped,
+stamped
 steeds
 stern
 strut

@@ -1,9 +1,4 @@
 <?php
-error_reporting(E_ALL);       // Report Errors, Warnings, and Notices
-ini_set('display_errors', 1); // Display errors on page (instead of a log file)
-?>
-
-    <?php
 
       // Load our source words into an array
       $lines = file('./words.txt');
@@ -36,19 +31,11 @@ ini_set('display_errors', 1); // Display errors on page (instead of a log file)
           return $pwd;
       }
 
-    if (isset($_GET['num_words'])) {
-        $nw = $_GET['num_words'];
-        echo '<h3>';
-        // Validate: is the input a number?
-        if (!is_numeric($nw)) {
-            echo 'The number of words to include in your passphrase must be, well, a number.';
-        // Validate: is the input a valid number?
-        } elseif ($nw < $MIN_WORDS || $nw > $MAX_WORDS) {
-            echo "The number of words in your catch phase must be no less than $MIN_WORDS and no greater than $MAX_WORDS";
-        } else {
-            $pwd = concatPwd($lines, $nw);
-            echo "Your password is $pwd";
-        }
-        echo "</h3>\n";
-    }
-    //echoLines($lines);
+      if (isset($_GET['submitted'])) {
+          if ($validation['valid']) {
+              $pwd = concatPwd($lines, $validation['num']);
+              echo "Your password is $pwd";
+          } else {
+              echo "<span class='error'>".$validation['msg'].'</span>';
+          }
+      }

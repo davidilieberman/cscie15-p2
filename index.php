@@ -7,12 +7,14 @@
 
   <body>
     <h2>Configure your passphrase:</h2>
+    <!-- TODO: convert to post -->
     <form method="get" action="./index.php">
+      <?php echo "validation->num is " . $validation["num"]; ?>
       <p>Number of words: <select name="num_words">
         <?php
         for ($i = $MIN_WORDS; $i <= $MAX_WORDS; ++$i) {
             echo "<option value='$i'";
-            if ($i == $DEFAULT_COUNT) echo " selected='true' ";
+            if ($i == $validation["num"]) echo " selected='true' ";
             echo ">$i</option>\n";
         }
         ?>
@@ -41,6 +43,6 @@
       <input type="submit" value="Generate Passphrase!" name="submitted"/>
     </form>
 
-    <?php require './generator.php'; ?>
+    <h3><?php require './generator.php'; ?></h3>
   </body>
 </html>
