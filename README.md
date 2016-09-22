@@ -8,7 +8,7 @@ GitHub URL: [https://github.com/davidilieberman/cscie15-p2](https://github.com/d
 
 Published URL: [http://p2.davidisadorelieberman.com/](http://p2.davidisadorelieberman.com/)
 
-Video:
+Video: [https://youtu.be/8c6LrgxG4oM](https://youtu.be/8c6LrgxG4oM)
 
 The solution pulls sample words from a text file to construct a passphrase of between three and ten randomly selected words. (The list consists of the unique words spoken in the opening soliloquy of Shakespeare's _Richard III_; obviously, such a limited source set significantly improves the likelihood that a password-cracking algorithm would hit on a match, but the intent is to demonstrate the logic rather than to solve the crackability problem.) The logic guarantees that any word will appear in a generated passphrase only once.
 
