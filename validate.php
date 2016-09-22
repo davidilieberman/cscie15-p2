@@ -9,23 +9,41 @@ $MAX_WORDS = 10;
 // Gather parameters into an associative array; this allows us
 // to switch form methods to support validation testing in one place in our code
 $params = array();
+// To test validation logic, we support pulling the num_words from a GET
+// parameter, so it can be entered directly into the location bar; otherwise
+// we find it in posted form data.
 $params['numWords'] =
   (isset($_GET['num_words']) ? $_GET['num_words'] : $_POST['num_words']);
+
 $params['includeNums'] = $_POST['inc_nums'];
 $params['specialChars'] = $_POST['sp_chars'];
+
+// The presence of the 'submitted' parameter triggers the passphrase generator;
+// we allow it to be passed optionally as a GET parameter to support testing
+// the validation logic.
 $params['submitted'] =
   (isset($_GET['submitted']) ? $_GET['submitted'] : $_POST['submitted']);
 
 debug('validate.php: includeNums = '.$params['includeNums']);
 debug('validate.php: specialChars = '.$params['specialChars']);
 
+/**
+Convenience function to convert the value of a field configured as a radio
+button to a boolean.
+*/
 function radioState($key, $params)
 {
     return isset($params[$key]) && $params[$key] == 'yes';
 }
 
 /**
- c) if it isn't valid provides an error message.
+The validation logic runs on every page load, whether or not a request has been submitted. If no request has been submitted, we preset the form values to
+defined defaults. This also allows us to retain the user's inputs on page reload to simulate session stickiness.
+
+Returns an associative array with entries:
+'valid': boolean flag indicating validation state
+'numWords': the number of words to include in the passphrase
+'msg': the error message to display if 'valid' is false
  */
 function getValidation($min, $max, $defaultCount, $params)
 {
@@ -40,7 +58,7 @@ function getValidation($min, $max, $defaultCount, $params)
           $validation['valid'] = false;
       // Validate: is the input a *valid* number?
       } elseif ($nw < $min || $nw > $max) {
-          $validation['msg'] = "The number of words in your catch phase must be no less than $min and no greater than $max";
+          $validation['msg'] = "The number of words in your catch phrase must be no less than $min and no greater than $max";
           $validation['valid'] = false;
       } else {
           $validation['num'] = $nw;
@@ -52,20 +70,20 @@ function getValidation($min, $max, $defaultCount, $params)
     return $validation;
 }
 
-// writes msg to standard error to avoid pushing debug info to the output HTML
-// modeled on example found here:
-// http://stackoverflow.com/questions/6079492/how-to-print-a-debug-log
+/**
+I actually prefer reviewing server logs to pushing system error and debugging
+information to the rendered HTML. This little function stands in for a richer,
+granular logging package.
+
+Writes msg to standard error to avoid pushing debug info to the output HTML
+modeled on example found here:
+http://stackoverflow.com/questions/6079492/how-to-print-a-debug-log
+*/
 function debug($msg)
 {
     file_put_contents('php://stderr', print_r($msg."\n", true));
 }
 
 $DEFAULT_COUNT = 4;
-
-// State of the inc_nums radio input; default is 'no'
-//$includeNums = radioState('inc_nums');
-
-// State of the spec_chars input; default is 'no'
-//$specialChars = radioState('sp_chars');
 
 $validation = getValidation($MIN_WORDS, $MAX_WORDS, $DEFAULT_COUNT, $params);
