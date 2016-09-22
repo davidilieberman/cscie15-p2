@@ -1,11 +1,5 @@
 <?php
 
-// Load our source words into an array
-$lines = file('./words.txt');
-
-// Set up our array of special characters
-$charsArray = array('@', '#', '$', '%', '^', '*', '?', '!');
-
 // Debugging function: write the current state of the word array to output
 function echoLines($lines)
 {
@@ -27,8 +21,15 @@ function getChar($charsArray)
 }
 
 // Construct the password
-function concatPwd($lines, $numComponents, $charsArray, $params)
+function concatPwd($numComponents, $params)
 {
+
+    // Load our source words into an array
+    $lines = file('./words.txt');
+
+    // Set up our array of special characters
+    $charsArray = array('@', '#', '$', '%', '^', '*', '?', '!');
+
     // Initialize the passphrase to an empty string
     $pwd = '';
     for ($i = 0; $i < $numComponents; ++$i) {
@@ -69,7 +70,7 @@ function concatPwd($lines, $numComponents, $charsArray, $params)
 // validation error message if validation has failed or run the request.
 if ($params['submitted']) {
     if ($validation['valid']) {
-        $pwd = concatPwd($lines, $validation['num'], $charsArray, $params);
+        $pwd = concatPwd($validation['num'], $params);
         echo "Your password is $pwd";
     } else {
         echo "<span class='error'>".$validation['msg'].'</span>';
