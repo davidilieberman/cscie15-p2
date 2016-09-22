@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>CSCI E15 : Fall, 2016 : David Lieberman : P2 : Nifty Passphrase Generator</title>
     <meta charset="UTF-8"/>
