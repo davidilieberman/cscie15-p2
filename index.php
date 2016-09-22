@@ -18,7 +18,7 @@
         <?php
         for ($i = $MIN_WORDS; $i <= $MAX_WORDS; ++$i) {
             echo "<option value='$i'";
-            if ($i == $validation["num"]) echo " selected='true' ";
+            if ($i == $validation["num"]) echo " selected ";
             echo ">$i</option>\n";
         }
         ?>
@@ -47,6 +47,6 @@
       <input type="submit" value="Generate Passphrase!" name="submitted"/>
     </form>
 
-    <h3><?php require './generator.php'; ?></h3>
+    <h3><?php require './generator.php'; ?>&nbsp;</h3>
   </body>
 </html>
