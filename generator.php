@@ -23,7 +23,7 @@
       }
 
       // Construct the password
-      function concatPwd($lines, $numComponents, $nums, $charsArray, $params)
+      function concatPwd($lines, $numComponents, $charsArray, $params)
       {
           $pwd = '';
           for ($i = 0; $i < $numComponents; ++$i) {
@@ -61,7 +61,7 @@
       if (isset($params['submitted'])) {
           if ($validation['valid']) {
               debug("generator.php: specialChars is $specialChars");
-              $pwd = concatPwd($lines, $validation['num'], $includeNums, $charsArray, $params);
+              $pwd = concatPwd($lines, $validation['num'], $charsArray, $params);
               echo "Your password is $pwd";
           } else {
               echo "<span class='error'>".$validation['msg'].'</span>';

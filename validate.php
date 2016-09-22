@@ -8,14 +8,16 @@ $MAX_WORDS = 10;
 
 // Gather parameters into an associative array; this allows us
 // to switch form methods to support validation testing in one place in our code
-$params = array("numWords" => $_POST["num_words"],
-                "includeNums" => $_POST["inc_nums"],
-                "specialChars" => $_POST["sp_chars"],
-                "submitted" => $_POST["submitted"]
-              );
+$params = array();
+$params['numWords'] =
+  (isset($_GET['num_words']) ? $_GET['num_words'] : $_POST['num_words']);
+$params['includeNums'] = $_POST['inc_nums'];
+$params['specialChars'] = $_POST['sp_chars'];
+$params['submitted'] =
+  (isset($_GET['submitted']) ? $_GET['submitted'] : $_POST['submitted']);
 
-debug("validate.php: includeNums = " . $params["includeNums"]);
-debug("validate.php: specialChars = " . $params["specialChars"]);
+debug('validate.php: includeNums = '.$params['includeNums']);
+debug('validate.php: specialChars = '.$params['specialChars']);
 
 function radioState($key, $params)
 {
@@ -23,40 +25,39 @@ function radioState($key, $params)
 }
 
 /**
-Returns an associative array with values indicating
-a) whether the request is valid,
-b) if it is how many words the user has requested, and
-c) if it isn't valid provides an error message.
-*/
+ c) if it isn't valid provides an error message.
+ */
 function getValidation($min, $max, $defaultCount, $params)
 {
-    debug("getValidation() running");
-    $validation = array("valid" => true, "num" => $defaultCount, "msg" => "");
+    debug('getValidation() running');
+    $validation = array('valid' => true, 'num' => $defaultCount, 'msg' => '');
     if (isset($params['numWords'])) {
-        debug("getValidation(); found num_words parameter in request");
+        debug('getValidation(); found num_words parameter in request');
         $nw = $params['numWords'];
       // Validate: is the input a number?
       if (!is_numeric($nw)) {
-          $validation["msg"] = 'The number of words to include in your passphrase must be, well, a number.';
-          $validation["valid"] = false;
+          $validation['msg'] = 'The number of words to include in your passphrase must be, well, a number.';
+          $validation['valid'] = false;
       // Validate: is the input a *valid* number?
       } elseif ($nw < $min || $nw > $max) {
-          $validation["msg"] = "The number of words in your catch phase must be no less than $min and no greater than $max";
-          $validation["valid"] = false;
+          $validation['msg'] = "The number of words in your catch phase must be no less than $min and no greater than $max";
+          $validation['valid'] = false;
       } else {
-        $validation["num"] = $nw;
+          $validation['num'] = $nw;
       }
     } else {
-      debug("getValidation(): no num_words parameter found in request");
+        debug('getValidation(): no num_words parameter found in request');
     }
+
     return $validation;
 }
 
 // writes msg to standard error to avoid pushing debug info to the output HTML
 // modeled on example found here:
 // http://stackoverflow.com/questions/6079492/how-to-print-a-debug-log
-function debug($msg) {
-  file_put_contents('php://stderr', print_r($msg . "\n", TRUE));
+function debug($msg)
+{
+    file_put_contents('php://stderr', print_r($msg."\n", true));
 }
 
 $DEFAULT_COUNT = 4;

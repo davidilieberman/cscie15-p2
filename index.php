@@ -8,7 +8,7 @@
 
   <body>
     <h2>Configure your passphrase:</h2>
-    <!-- TODO: convert to post -->
+
     <form method="post" action="./index.php">
 
       <p>Number of words: <select name="num_words">
