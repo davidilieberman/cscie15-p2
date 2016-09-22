@@ -69,7 +69,6 @@ function concatPwd($lines, $numComponents, $charsArray, $params)
 // validation error message if validation has failed or run the request.
 if (isset($params['submitted'])) {
     if ($validation['valid']) {
-        debug("generator.php: specialChars is $specialChars");
         $pwd = concatPwd($lines, $validation['num'], $charsArray, $params);
         echo "Your password is $pwd";
     } else {
