@@ -67,7 +67,7 @@ function concatPwd($lines, $numComponents, $charsArray, $params)
 
 // If the user has submitted a generation request, either show the
 // validation error message if validation has failed or run the request.
-if (isset($params['submitted'])) {
+if ($params['submitted']) {
     if ($validation['valid']) {
         $pwd = concatPwd($lines, $validation['num'], $charsArray, $params);
         echo "Your password is $pwd";
