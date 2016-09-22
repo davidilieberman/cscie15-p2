@@ -2,11 +2,14 @@
 <html>
   <head>
     <title>CSCI E15 : Fall, 2016 : David Lieberman : P2 : Nifty Passphrase Generator</title>
+    <meta charset="UTF-8"/>
     <link href="./styles.css" rel="stylesheet"/>
     <?php require './validate.php'; ?>
   </head>
 
   <body>
+    <h1>Nifty Passphrase Generator</h1>
+    <h4>David Lieberman : CSCI E15 : Fall, 2016</h4>
     <h2>Configure your passphrase:</h2>
 
     <form method="post" action="./index.php">
