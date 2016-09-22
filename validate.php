@@ -6,26 +6,22 @@ $MIN_WORDS = 3;
 // The maximum number of words allowed in our passphrase
 $MAX_WORDS = 10;
 
+// The default number of words in our passphrase
+$DEFAULT_COUNT = 4;
+
 // Gather parameters into an associative array; this allows us
 // to switch form methods to support validation testing in one place in our code
 $params = array();
-// To test validation logic, we support pulling the num_words from a GET
-// parameter, so it can be entered directly into the location bar; otherwise
-// we find it in posted form data.
-$params['numWords'] =
-  (isset($_GET['num_words']) ? $_GET['num_words'] : $_POST['num_words']);
 
-$params['includeNums'] = $_POST['inc_nums'];
-$params['specialChars'] = $_POST['sp_chars'];
-
-// The presence of the 'submitted' parameter triggers the passphrase generator;
-// we allow it to be passed optionally as a GET parameter to support testing
-// the validation logic.
-$params['submitted'] =
-  (isset($_GET['submitted']) ? $_GET['submitted'] : $_POST['submitted']);
-
-debug('validate.php: includeNums = '.$params['includeNums']);
-debug('validate.php: specialChars = '.$params['specialChars']);
+/**
+Check GET, then POST for presence of the requested parameter. If the parameter
+is not found in either context, return the submitted default value.
+*/
+function getOrPostOrBust($paramName, $default) {
+  $v =   (isset($_GET[$paramName]) ? $_GET[$paramName] :
+      (isset($_POST[$paramName]) ? $_POST[$paramName] : $default));
+  return $v;
+}
 
 /**
 Convenience function to convert the value of a field configured as a radio
@@ -84,6 +80,23 @@ function debug($msg)
     file_put_contents('php://stderr', print_r($msg."\n", true));
 }
 
-$DEFAULT_COUNT = 4;
+// Now setup the input values and validate.
+
+// To test validation logic, we support pulling the num_words from a GET
+// parameter, so it can be entered directly into the location bar; otherwise
+// we find it in posted form data.
+$params['numWords'] = getOrPostOrBust('num_words', $DEFAULT_COUNT);
+
+// The presence of the 'submitted' parameter triggers the passphrase generator;
+// we allow it to be passed optionally as a GET parameter to support testing
+// the validation logic.
+$params['submitted'] = getOrPostOrBust('submitted', false);
+
+$params['includeNums'] = isset($_POST['inc_nums']) ? $_POST['inc_nums'] : 'no';
+$params['specialChars'] = isset($_POST['sp_chars']) ? $_POST['sp_chars'] : 'no';
+
+debug('validate.php: includeNums = '.$params['includeNums']);
+debug('validate.php: specialChars = '.$params['specialChars']);
+
 
 $validation = getValidation($MIN_WORDS, $MAX_WORDS, $DEFAULT_COUNT, $params);
